@@ -1,0 +1,187 @@
+Notes from IBM Linux shell commands  videos:
+
+Check for shell type:
+	- $ printenv SHELL
+
+Change to bash:
+	- $ bash
+
+Getting information:
+	whoami - username
+	id - user id, group id
+	uname - operating system name
+	ps - running processes
+	top - running process + resource usage
+	df - mounted file systems
+	man - references manual
+	date - today's date
+
+Working with files:
+	cp - copy file
+	mv - change file name or path
+	rm - remove file
+	touch - create empty file, update file timestamp
+	chmod - change/modify file permissions
+	wc - get count of lines, words, chars in a file
+	grep - returning lines in file matching pattern
+
+Navigating and working with directories:
+	ls - list files / dirs
+	find - find files in directory tree based on pattern
+	pwd - get present working directory
+	mkdir - make directory
+	cd - change directory
+	rmdir - remove directory
+
+Printing file and string contents:
+	cat - print file contents
+	more - print file contents page by page
+	head - print first n lines of file
+	tail - print last n lines of file
+	echo - print string or variable value
+
+Compression and archiving:
+	tar - archive a set of file
+	zip - compresses a set of file
+	unzip - extracts files from a compressed or zipped archived
+
+Networking:
+	hostname - print hostname
+	ping - send packets to url and print response
+	ifconfig - display or configure system network interfaces
+	curl - display contents of file at a url
+	wget - download file from url
+
+
+===========================================================================
+
+
+
+
+What is a script? 
+	> Script: list of commands interpreted by a scripting language
+	> commands can be entered interactively or listed in a text file
+	> interpreted not compiled
+	> scripts run slower but faster to develop
+
+Usage:
+	> etl jobs, file backups, archiving, sys admin
+	> automate process
+
+Shell scripts and the shebang
+	> shell script - executable text file with an interpreter directive
+	> shebang directive
+		> #!interpreter [optional-arg]
+	> interpreter is a path to an executable program
+	> optional arg - single string argument
+
+	e.g #!/bin/sh, or #!/bin/bash
+
+	e.g >> is the bash output redirect e.g echo '#! /bin/bash' >> hello_world.sh
+
+	Once the script is written, you must check permissions!!!
+		> ls -l name_of_script.sh
+		if there is rw then there is read, write permissions but if there is no x then it is not executable
+	Must ensure that the permission is enabled to execute
+
+How to make shell script executable?
+	chmod +x name_of_script.sh
+
+=========================================================================
+
+
+Filters / Pipes / Variables
+
+Filters:
+	> transform input data (standard input) to output data (standard output)
+	> e.g wc, cat, more, head, sort etc.
+	> can be chained together
+
+Pipe command - |:
+	> chain filter commands
+	> e.g command1 | command2
+	> output of command1 is input to command2
+
+Shell variables:
+	> scope limited to shell
+	> other shells cannot see each others shell vars
+	> set - list all shell variables
+	> define new var
+		> e.g # var_name=value
+		> e.g # GREETINGS="Hello"
+		> call by using $GREETINGS
+		> clear: unset GREETINGS
+
+Environment variables:
+	> extended scope
+	> export GREETINGS
+	> env - list all environment variables
+
+=========================================================================
+
+More features
+
+Metacharacters:
+	# - precedes a comment
+	; - command separator
+	* - filename expansion wildcard
+	? - single character wildcard in filecard expansion
+
+Quoting:
+	\ - escape special character interpretation
+	e.g "\$1 each" tells shell to not use $ metacharacter
+	" " - interpret literally, but evaluate metacharacter
+	e.g "$1 each" tells shell to call variable '1'
+	' ' - interpret literally
+	e.g '$1 each' tells shell to print '$1 each' literally
+
+I/O redirection:
+	Input/Output redirection
+	> - redirect output to a file (also creates one if it does not exist;
+				       overwrite current file if it already exists)
+	>> - append output to file (avoid overwrite current file if it exists)
+	2> - Redirect standard error to file
+	2 >> - Append standard error to file
+	< - Redirect file contents to standard input
+
+Command substitution:
+	Replace command with its output
+	$(command) or `command`
+	e.g here = $(pwd)
+	echo $here returns current directory
+
+Command line arguments:
+	Program arguments specified on the command line
+	A way to pass arguments to a shell script
+	Usage:
+		./name_of_script.sh arg1 arg2
+
+Modes of operation:
+	Batch mode:
+		command1; command2
+		command1 runs before command2; command2 runs after command1
+	Concurrent mode:
+		command1 & command2
+		commands run in parallel
+
+============================================================================
+
+Scheduling jobs using cron
+
+
+run certain jobs to run at certain times
+i.e load script to run at midnight every night or a backup script to run every sunday at 2 AM
+Cron allows automation of such tasks
+
+Cron is a service that runs jobs
+'crond' interprets 'crontab files' and submits jobs to cron
+'crontab' or cron table is a table of jobs and schedule data
+crontab command invokes text editor to edit crontab file
+
+to open:
+	$ crontab -e	# opens editor
+	job syntax:
+		m (minute)  h (hour)  dom (day of month)  mon (month)  dow (day of week) command
+		e.g 30 15 * * 0 date >> sundays.txt
+
+	$ crontab -l | tail -6	# shows active cron jobs with their schedules  
